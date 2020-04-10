@@ -1,6 +1,7 @@
 import React from 'react'
 import {AuthContext} from 'react-onegraph'
 import {useQuery} from 'urql'
+import GithubRepo from './components/GithubRepo'
 
 function App() {
   const {login, status} = React.useContext(AuthContext)
@@ -16,45 +17,9 @@ function App() {
 
   return (
     <div className="App">
-      <GetGithubRepo />
+      <GithubRepo />
     </div>
   )
 }
 
 export default App
-
-function GetGithubRepo() {
-  const [res] = useQuery({
-    query: `
-    {
-      gitHub {
-        organization(login: "eggheadio") {
-          repositories(
-            first: 10
-            orderBy: { direction: DESC, field: CREATED_AT }
-          ) {
-            nodes {
-              id
-              name
-            }
-          }
-        }
-      }
-    }
-    `,
-  })
-  if (!res.data) {
-    return null
-  }
-
-  return (
-    <div>
-      <h1>egghead.io repos</h1>
-      <ul>
-        {res.data.gitHub.organization.repositories.nodes.map((repo) => (
-          <li key={repo.id}>{repo.name}</li>
-        ))}
-      </ul>
-    </div>
-  )
-}
