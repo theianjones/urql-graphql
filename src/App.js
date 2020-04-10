@@ -1,8 +1,7 @@
 import React from 'react'
 import {AuthContext} from 'react-onegraph'
-import {useQuery} from 'urql'
 import GithubRepo from './components/GithubRepo'
-
+import StarGithubRepo from './components/StarGithubRepo'
 function App() {
   const {login, status} = React.useContext(AuthContext)
   if (!status.github) {
@@ -18,6 +17,7 @@ function App() {
   return (
     <div className="App">
       <GithubRepo />
+      <StarGithubRepo />
     </div>
   )
 }

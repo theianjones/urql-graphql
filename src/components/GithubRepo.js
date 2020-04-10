@@ -11,12 +11,13 @@ query GithubRepoQuery{
         totalCount
       }
       forkCount
+      viewerHasStarred
     }
   }
 }
 `
 
-export default function GithubRepo() {
+export const useFetchRepo = () => {
   const [res] = useQuery({
     query: GITHUB_REPO_QUERY,
   })
@@ -24,8 +25,14 @@ export default function GithubRepo() {
     return null
   }
 
-  const {repository} = res.data.gitHub
+  return res.data.gitHub.repository
+}
 
+export default function GithubRepo({children}) {
+  const repository = useFetchRepo()
+  if (!repository) {
+    return null
+  }
   return (
     <div>
       <h1>{repository.name}</h1>
