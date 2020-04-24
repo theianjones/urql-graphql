@@ -1,7 +1,6 @@
 import React from 'react'
 import {AuthContext} from './contexts/AuthContext'
-import GithubRepo from './components/GithubRepo'
-import StarGithubRepo from './components/StarGithubRepo'
+import Comments from './components/Comments'
 
 function App() {
   const {login, status} = React.useContext(AuthContext)
@@ -17,8 +16,7 @@ function App() {
 
   return (
     <div className="App">
-      <GithubRepo />
-      <StarGithubRepo />
+      <Comments />
     </div>
   )
 }
