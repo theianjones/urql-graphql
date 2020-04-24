@@ -14,11 +14,7 @@ function App() {
     )
   }
 
-  return (
-    <div className="App">
-      <Comments />
-    </div>
-  )
+  return <Comments />
 }
 
 export default App
