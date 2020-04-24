@@ -1,5 +1,5 @@
 import React from 'react'
-import {useQuery} from 'urql'
+import {useQuery, useSubscription} from 'urql'
 
 const GITHUB_REPO_QUERY = `
 query GithubRepoQuery{
@@ -17,15 +17,44 @@ query GithubRepoQuery{
 }
 `
 
+const NEW_COMMENT_SUBSCRIPTION = `
+subscription NewCommentComment {
+  github {
+    issueCommentEvent(
+      input: {
+        repoOwner: "theianjones"
+        repoName: "urql-graphql"
+      }
+    ) {
+      action
+      comment {
+        author {
+          login
+        }
+        body
+        id
+        url
+        viewerDidAuthor
+      }
+    }
+  }
+}
+`
+
 export const useFetchRepo = () => {
   const [res] = useQuery({
     query: GITHUB_REPO_QUERY,
   })
-  if (!res.data) {
-    return null
-  }
+  const [subscriptionResult] = useSubscription({
+    query: NEW_COMMENT_SUBSCRIPTION,
+  })
 
-  return res.data.gitHub.repository
+  console.log({res, subscriptionResult})
+  // if (!res.data) {
+  //   return null
+  // }
+
+  // return res.data.gitHub.repository
 }
 
 export default function GithubRepo({children}) {

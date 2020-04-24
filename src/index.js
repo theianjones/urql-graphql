@@ -2,11 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import UrqlProvider from './utils/createUrqlProvider'
-import {AuthProvider} from 'react-onegraph'
+import {AuthProvider} from './contexts/AuthContext'
+import {auth} from './utils/auth'
 
 ReactDOM.render(
   <UrqlProvider>
-    <AuthProvider appId={process.env.REACT_APP_ONE_GRAPH_APP_ID}>
+    <AuthProvider auth={auth}>
       <React.StrictMode>
         <App />
       </React.StrictMode>

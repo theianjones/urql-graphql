@@ -1,7 +1,8 @@
 import React from 'react'
-import {AuthContext} from 'react-onegraph'
+import {AuthContext} from './contexts/AuthContext'
 import GithubRepo from './components/GithubRepo'
 import StarGithubRepo from './components/StarGithubRepo'
+
 function App() {
   const {login, status} = React.useContext(AuthContext)
   if (!status.github) {

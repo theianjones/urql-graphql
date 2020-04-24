@@ -1,15 +1,30 @@
 import React from 'react'
-import {getToken} from './oneGraphTokens'
-import {createClient, Provider} from 'urql'
+import {
+  createClient,
+  defaultExchanges,
+  subscriptionExchange,
+  Provider,
+} from 'urql'
+import {SubscriptionClient} from 'onegraph-subscription-client'
+import {auth, APP_ID, CLIENT_URL} from './auth'
+
+const subscriptionClient = new SubscriptionClient(APP_ID, {
+  oneGraphAuth: auth,
+})
 
 const client = createClient({
-  url: `https://serve.onegraph.com/graphql?app_id=${process.env.REACT_APP_ONE_GRAPH_APP_ID}`,
+  url: CLIENT_URL,
   fetchOptions: () => {
-    const token = getToken()
     return {
-      headers: {authorization: token ? `Bearer ${token}` : ''},
+      headers: {...auth.authHeaders()},
     }
   },
+  exchanges: [
+    ...defaultExchanges,
+    subscriptionExchange({
+      forwardSubscription: (operation) => subscriptionClient.request(operation),
+    }),
+  ],
 })
 
 export default function UrqlProvider({children}) {
